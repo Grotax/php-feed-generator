@@ -13,6 +13,9 @@ function generateFeed(int $amount, int $start){
     $feedIo = new FeedIo;
     $feed = new Feed;
 
+    # offset
+    $amount += $start;
+
     $feed->setTitle('Test Feed');
 
     for ($i=$start; $i < $amount; $i++) { 
@@ -62,6 +65,7 @@ if (! isset($arguments["f"])){
 }
 
 $start = $arguments["s"] ?? 0;
+
 echo "Creating Feed with: " . $arguments["a"] . " items, starting with item nr. " . $start . PHP_EOL;
 echo "File name: " . $arguments["f"] . PHP_EOL;
 createFeedFile($arguments["a"], $start, $arguments["f"]);
