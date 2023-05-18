@@ -8,7 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 
 
-function generateFeed(int $amount, int $start){
+function generateFeed(int $amount, int $start, bool $oldDate){
 
     $feedIo = new FeedIo;
     $feed = new Feed;
@@ -18,13 +18,19 @@ function generateFeed(int $amount, int $start){
 
     $feed->setTitle('Test Feed');
 
+
+
     for ($i=$start; $i < $amount; $i++) { 
         $item = $feed->newItem();
         $item->setTitle('Item ' . $i);
-        $item->setLastModified(new \DateTime());
+        if ($oldDate){
+            $item->setLastModified(new \DateTime("-3 days"));
+        } else {
+            $item->setLastModified(new \DateTime());
+        }
         $item->setLink('https://feed-io.net/item/' . $i);
         $item->setContent("Hope you like the code you are reading");
-        $item->setSummary('my summary');
+        $item->setSummary('Title Number ' . $i);
         $feed->add($item);
     }
 
@@ -33,19 +39,20 @@ function generateFeed(int $amount, int $start){
     return $feedIo->toAtom($feed);
 }
 
-function createFeedFile($amount, $start, $file){
+function createFeedFile($amount, $start, $file, $oldDate){
     $myfile = fopen($file, "w");
-    $feed = generateFeed($amount, $start);
+    $feed = generateFeed($amount, $start, $oldDate);
     fwrite($myfile, $feed);
 }
 
-$arguments = getopt("a:s:f:h::");
+$arguments = getopt("a:s:f:o:h::");
 
 if (isset($arguments["h"])){
     $help=<<<EOT
     -a provide the amount of items e.g. -a 100
     -s provide the start number of the first item, should be smaller than -a e.g -s 50, default 0
     -f provide a path to the resulting feed file
+    -o (optional) use an older date for the items, -o true; -o yes; -o y
     EOT;
 
     echo "Help for feed-generator.php" . PHP_EOL;
@@ -66,6 +73,11 @@ if (! isset($arguments["f"])){
 
 $start = $arguments["s"] ?? 0;
 
+$oldDate = (bool) $arguments["o"] ?? false;
+
+
 echo "Creating Feed with: " . $arguments["a"] . " items, starting with item nr. " . $start . PHP_EOL;
+echo "Using an older date: " . var_export($oldDate, true) . PHP_EOL;
 echo "File name: " . $arguments["f"] . PHP_EOL;
-createFeedFile($arguments["a"], $start, $arguments["f"]);
+
+createFeedFile($arguments["a"], $start, $arguments["f"], $oldDate);
