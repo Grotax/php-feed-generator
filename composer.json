@@ -1,6 +1,14 @@
 {
+    "name": "grotax/php-feed-generator",
+    "description": "Tool used to generate test rss feeds.",
+    "license": "MIT",
     "require": {
-        "debril/feed-io": "*",
+        "debril/feed-io": "^v6.0.3",
         "php-http/guzzle7-adapter": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

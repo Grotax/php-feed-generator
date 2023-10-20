@@ -73,7 +73,12 @@ if (! isset($arguments["f"])){
 
 $start = $arguments["s"] ?? 0;
 
-$oldDate = (bool) $arguments["o"] ?? false;
+# prevent warning from php
+if (isset($arguments["o"])){
+    $oldDate = (bool) $arguments["o"] ?? false;
+} else {
+    $oldDate = false;
+}
 
 
 echo "Creating Feed with: " . $arguments["a"] . " items, starting with item nr. " . $start . PHP_EOL;
