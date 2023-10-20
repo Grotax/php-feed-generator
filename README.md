@@ -2,7 +2,7 @@
 
 Generates feed files for testing purposes.
 
-Used by Nextcloud News
+Used by [Nextcloud News](https://github.com/nextcloud/news)
 
 ```
 php feed-generator.php -h
