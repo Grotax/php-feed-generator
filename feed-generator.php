@@ -28,7 +28,8 @@ function generateFeed(int $amount, int $start, bool $oldDate){
         } else {
             $item->setLastModified(new \DateTime());
         }
-        $item->setLink('https://feed-io.net/item/' . $i);
+        $item->setLink('http://localhost:8090/item/' . $i);
+        $item->setPublicId('http://localhost:8090/item/' . $i);
         $item->setContent("Hope you like the code you are reading");
         $item->setSummary('Title Number ' . $i);
         $feed->add($item);
